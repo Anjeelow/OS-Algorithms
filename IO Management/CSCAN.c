@@ -24,14 +24,23 @@ void sort_requests(int arr[], int n);
 int main() {
     DiskScheduler scheduler;
     
-    int initial_position = 50;
-    int track_requests[] = {82, 170, 43, 140, 24, 16, 190};
-    int num_requests = sizeof(track_requests) / sizeof(track_requests[0]);
+    int initial_position;
+    int num_requests;
+    
+    printf("Enter the initial disk arm position: ");
+    scanf("%d", &initial_position);
+
+    printf("Enter the number of track requests: ");
+    scanf("%d", &num_requests);
 
     initialize_scheduler(&scheduler, initial_position);
 
+    printf("Enter the track requests: \n");
     for (int i = 0; i < num_requests; i++) {
-        add_request(&scheduler, track_requests[i]);
+        printf("Request %d: ", i + 1);
+        int track;
+        scanf("%d", &track);
+        add_request(&scheduler, track);
     }
 
     c_scan_algorithm(&scheduler);
