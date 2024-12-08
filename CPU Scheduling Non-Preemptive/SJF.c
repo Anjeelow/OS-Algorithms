@@ -16,7 +16,6 @@ void sjf_non_preemptive(struct Process proc[], int n) {
     int completed = 0;
     int current_time = 0;
 
-    // Array to track whether each process has been completed
     int is_completed[n];
     for (int i = 0; i < n; i++) {
         is_completed[i] = 0;
@@ -26,7 +25,6 @@ void sjf_non_preemptive(struct Process proc[], int n) {
         int min_burst_time = INT_MAX;
         int shortest_job_index = -1;
 
-        // Find the process with the shortest burst time that has arrived
         for (int i = 0; i < n; i++) {
             if (!is_completed[i] && proc[i].arrival_time <= current_time &&
                 proc[i].burst_time < min_burst_time) {
@@ -55,23 +53,19 @@ void sjf_non_preemptive(struct Process proc[], int n) {
         proc[shortest_job_index].waiting_time =
             proc[shortest_job_index].turnaround_time - proc[shortest_job_index].burst_time;
 
-        // Update totals
         total_turnaround_time += proc[shortest_job_index].turnaround_time;
         total_waiting_time += proc[shortest_job_index].waiting_time;
 
-        // Mark the process as completed
         is_completed[shortest_job_index] = 1;
         completed++;
     }
 
-    // Display results
     printf("Process\tArrival\tBurst\tCompletion\tTurnaround\tWaiting\n");
     for (int i = 0; i < n; i++) {
         printf("P%d\t%d\t%d\t%d\t\t%d\t\t%d\n", proc[i].id, proc[i].arrival_time, proc[i].burst_time,
                proc[i].completion_time, proc[i].turnaround_time, proc[i].waiting_time);
     }
 
-    // Average turnaround time and waiting time
     printf("\nAverage Turnaround Time: %.2f\n", (float)total_turnaround_time / n);
     printf("Average Waiting Time: %.2f\n", (float)total_waiting_time / n);
 }
@@ -84,9 +78,8 @@ void display_gantt_chart(struct Process proc[], int n) {
     
     for (int x = 1; x <= n; x++) {
 
-        printf("%c.)     ", 'a' + x - 1);
+        printf("%c.)      ", 'a' + x - 1);
 
-        // Top border
         for (int i = 0; i < x; i++) {
             printf(" ");
             for (int j = 0; j < proc[i].burst_time * scale; j++) {
@@ -95,7 +88,6 @@ void display_gantt_chart(struct Process proc[], int n) {
         }
         printf("\n         ");
 
-        // Process blocks with process IDs
         for (int i = 0; i < x; i++) {
             printf("| P%d ", proc[i].id);
             for (int j = 0; j < proc[i].burst_time * scale - 4; j++) {
@@ -104,7 +96,6 @@ void display_gantt_chart(struct Process proc[], int n) {
         }
         printf("|\n         ");
 
-        // Bottom border 
         for (int i = 0; i < x; i++) {
             printf(" ");
             for (int j = 0; j < proc[i].burst_time * scale; j++) {
@@ -113,9 +104,8 @@ void display_gantt_chart(struct Process proc[], int n) {
         }
         printf("\n");
 
-        // Time markers
         current_time = 0;
-        printf("        %d", current_time);
+        printf("          %d", current_time);
         for (int i = 0; i < x; i++) {
             current_time += proc[i].burst_time;
             int marker_spacing = proc[i].burst_time * scale - 1;
